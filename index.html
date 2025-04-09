@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Art & Painting Studio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #fefefe;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    header {
+      background-image: url("WhatsApp Image 2025-04-09 at 14.42.33_5b86014d.jpg");
+      background-size: cover;
+      background-position: center;
+      color: white;
+      text-align: center;
+      padding: 100px 20px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    nav {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+    }
+
+    nav a {
+      color: white;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: bold;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      left: 0;
+      bottom: -4px;
+      background-color: white;
+      transition: width 0.3s ease-in-out;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    header h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+      opacity: 0;
+      transform: translateY(-20px);
+      animation: fadeInUp 1s ease forwards;
+    }
+
+    header p {
+      font-size: 20px;
+      margin-bottom: 30px;
+      opacity: 0;
+      animation: fadeIn 2s ease forwards 0.5s;
+    }
+
+    .btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: white;
+      padding: 14px 28px;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 16px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      opacity: 0;
+      animation: fadeIn 2s ease forwards 1s;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 6px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      z-index: 1000;
+    }
+
+    .logo img {
+      height: 60px;
+      width: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      opacity: 1;
+    }
+
+    .logo img:hover {
+      transform: scale(1.05) rotate(-1deg);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    @keyframes fadeInLogo {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    .section {
+      padding: 60px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .contact-info {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    .contact-info a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .contact-info a:hover {
+      text-decoration: underline;
+    }
+
+    .whatsapp-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #25D366;
+      color: white;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .whatsapp-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+    }
+
+    .gallery img {
+      width: 100%;
+      border-radius: 10px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .modal img {
+      max-width: 80%;
+      max-height: 80%;
+      border-radius: 12px;
+      animation: zoomIn 0.3s ease;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .modal .close-btn {
+      margin-top: 20px;
+      font-size: 20px;
+      color: white;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .modal .close-btn:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    #about {
+      padding: 60px 20px;
+      background-color: #fff7f1;
+      color: #333;
+      text-align: center;
+    }
+
+    #about h2 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    #about p {
+      max-width: 900px;
+      margin: auto;
+      font-size: 17px;
+      text-align: justify;
+      line-height: 1.8;
+    }
+
+    .contact-section {
+      background: linear-gradient(to right, #ffffff, #f9f9f9);
+      text-align: center;
+      padding: 80px 20px;
+      position: relative;
+      box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.05);
+    }
+
+    .contact-section h3 {
+      font-size: 36px;
+      margin-bottom: 10px;
+      color: #222;
+    }
+
+    .contact-sub {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 40px;
+    }
+
+    .contact-details {
+      font-size: 18px;
+      line-height: 2;
+    }
+
+    .contact-details a {
+      color: #0077cc;
+      text-decoration: none;
+    }
+
+    .contact-details a:hover {
+      text-decoration: underline;
+    }
+
+    /* WhatsApp button with glow effect */
+    .glow-whatsapp-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 28px;
+      background-color: #25D366;
+      color: #fff;
+      font-weight: bold;
+      font-size: 18px;
+      border: none;
+      border-radius: 50px;
+      text-decoration: none;
+      margin-top: 30px;
+      box-shadow: 0 0 20px rgba(37, 211, 102, 0.6);
+      transition: all 0.3s ease-in-out;
+      animation: pulseGlow 2s infinite;
+    }
+
+    .glow-whatsapp-btn img {
+      width: 24px;
+      height: 24px;
+      filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.5));
+    }
+
+    .glow-whatsapp-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(37, 211, 102, 0.9);
+    }
+
+    @keyframes pulseGlow {
+      0% {
+        box-shadow: 0 0 15px rgba(37, 211, 102, 0.5);
+      }
+
+      50% {
+        box-shadow: 0 0 25px rgba(37, 211, 102, 0.9);
+      }
+
+      100% {
+        box-shadow: 0 0 15px rgba(37, 211, 102, 0.5);
+      }
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="your-logo.png" alt="Logo">
+    </div>
+    <nav>
+
+      <a href="#gallery">Gallery</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <h1>Art & Painting</h1>
+    <p>Express Your Creativity</p>
+    <a href="#gallery" class="btn">View Gallery</a>
+  </header>
+
+  <section class="section" id="gallery">
+    <div class="gallery">
+      <img src="img1.jpg" alt="Art 1">
+      <img src="img2.jpg" alt="Art 2">
+      <img src="img3.jpg" alt="Art 3">
+      <img src="img4.jpg" alt="Art 4">
+      <img src="img5.jpg" alt="Art 5">
+      <img src="img6.jpg" alt="Art 6">
+      <img src="img7.jpg" alt="Art 7">
+      <img src="img8.jpg" alt="Art 8">
+      <img src="img10.jpg" alt="Art 10">
+      <img src="img11.jpg" alt="Art 11">
+      <img src="img12.jpg" alt="Art 12">
+      <img src="img13.jpg" alt="Art 13">
+      <img src="img14.jpg" alt="Art 14">
+      <img src="img15.jpg" alt="Art 15">
+      <img src="img16.jpg" alt="Art 16">
+      <img src="img17.jpg" alt="Art 17">
+      <img src="img18.jpg" alt="Art 18">
+      <img src="img19.jpg" alt="Art 19">
+      <img src="img20.jpg" alt="Art 20">
+    </div>
+  </section>
+
+  <!-- Modal -->
+  <div class="modal" id="imageModal">
+    <img id="modalImg" src="" alt="Enlarged Image">
+    <button class="close-btn" id="closeModal">Back</button>
+  </div>
+  <section id="about">
+    <h2>About Me - Shani Singh</h2>
+    <p><strong>Shani Singh: The Color of Revolution on the Canvas of the Inner Self</strong><br>
+      Rooted in the fertile soil of Ramnagar Powai, Azamgarh, Uttar Pradesh, Shani Singh is an extraordinary visionary
+      from an ordinary farming family. His story is not merely a presentation of art, but a proclamation of the ignited
+      spark that resides in every young heart. In the fourth grade, when a friend challenged his creative skills, he did
+      not accept defeat. He transformed that challenge into his inherent strength and initiated a new revolution on the
+      canvas of art.</p>
+
+    <p>Five years of relentless effort and burning passion transformed Shani not just into an artist, but into a
+      rebellious creator. He even sidelined his academic education, as the tide of art surged within him. His art
+      matured him so much that his Sanskrit teacher organized a competition between them, in which Shani emerged
+      victorious. He converted his anger into positive energy and revived the suppressed artistic talent within him.</p>
+
+    <p>Shani Singh's art, a priceless treasure of our cultural heritage, is a proclamation of the revival of folk arts.
+      He has a special interest in Mandala art and Patchwork paintings. His ultimate goal is to inspire young people and
+      ignite within them the flame to create something extraordinary. He uses various mediums, including oil paints,
+      charcoal, pencil, and animation, but the true medium of his art is his rebellious heart, which presents a new saga
+      in every color.</p>
+
+    <p>Shani Singh has participated in significant exhibitions like "Echoes of Serenity" and "Divine Emergence" at
+      Gandhi Darshan, Rajghat. He organized an art competition for child artists on the occasion of the Ram Mandir
+      inauguration on January 22nd. His ultimate aim is to guide young people in the right direction and help them
+      recognize their unique talents. He believes that art is not just a hobby, but an integral part of life, which
+      connects us to our roots and empowers us to establish our identity.</p>
+
+    <h3>Echo of Peace: The Musical Manifestation of the Soul</h3>
+    <p>Shani Singh's "Echo of Peace" is not just a painting, but a musical manifestation of his inner self, the vocal
+      expression of his soul. It is an expression of the period when he felt enveloped by worldly noise, pretense, and
+      indifference. Life seemed like a pointless race, where one had to run without any destination. But within him, in
+      the depths of his eyes, another world existed—his countless dreams, twinkling like stars.</p>
+
+    <p>The vast eye depicted in "Echo of Peace" is not just a medium to see the world, but a window to his soul. It
+      holds a strange pain, an anger perhaps towards himself, a despair that was emptying him from within, and a
+      restlessness that wouldn't let him have a moment of peace. He was merely searching for a quiet place away from
+      this noise, where he could hear the voice of his soul, where his dreams could turn into reality.</p>
+
+    <p>In that painting, within his eyes, hummingbirds appeared. A small bird sits within his eye, as if his suppressed
+      desires and unexpressed thoughts are imprisoned in a secret dungeon. It symbolizes all the things he wanted to
+      express, what he wanted to do, but couldn't due to some unknown fear. It was a silent cry of his conscience,
+      suppressed but not dead.</p>
+
+    <p>And the other bird... it is taking a flight of freedom from that vast eye, just as depicted in the painting. It
+      was his own restless desire—a search for a new path, hope for a new beginning, the start of a new journey. The
+      wings of that bird are adorned with the colors of the rainbow—each color a new possibility, a ray of new hope.</p>
+
+    <p>Shani Singh was afraid, it's true. He hesitated to pursue his dreams. He feared he would never achieve them, that
+      he would get lost in the noise of this world. But one day, a change occurred within him. He made a bold
+      decision—to break his limitations, to leave his fear behind, and to enter the world of his dreams. Just as that
+      hummingbird fearlessly flew from his eye in the painting, so did he spread the wings of his imagination and took a
+      long flight. He set out in search of the peace that had always existed within him, only needing to be recognized
+      and experienced.</p>
+
+    <p>"Echo of Peace" is not just a painting, but a saga of his soul, a living testament to his inner journey. It
+      reminds him that hardships will come in life, but one should never abandon their dreams. It inspires him to give
+      flight to his imagination and find the peace of his soul. Like that hummingbird, which flies freely in the
+      painting, he also broke his limitations and breathed in the air of freedom. And those stars... they are the
+      witnesses to the infinity of his dreams, countless possibilities. They assure him that nothing is impossible, only
+      unwavering faith and determination are needed.</p>
+
+    <p>Currently, Shani Singh is working to revive the disappearing folk arts. His artistic aspiration is to unite all
+      artists and help them progress through their art. He plans to organize exhibitions from time to time, so that
+      young people can understand our cultural heritage and draw inspiration from it.</p>
+
+    <p>For Shani Singh, art is a new perspective on life, which empowers young people to change their mindset. He sees
+      the world through his art as a place where young people are heading in the wrong direction without knowledge. He
+      wants to show the right direction of art and ensure that art is not a substitute for artificial intelligence.</p>
+  </section>
+
+  <section class="contact-section" id="contact">
+    <h3>Let's Connect</h3>
+    <p class="contact-sub">Have a project, question, or just want to chat? I'm all ears!</p>
+
+    <div class="contact-details">
+      <p><strong>📞 Phone:</strong> <a href="tel:+919876543210">+91 98211 56205</a></p>
+      <p><strong>📧 Email:</strong> <a href="mailto:shanisingh@example.com">himanshupandey0770@gmail.com</a></p>
+      <a href="https://wa.me/9821156205" target="_blank" class="glow-whatsapp-btn">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+        Chat on WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <footer style="padding: 20px; text-align: center; font-size: 14px; background-color: #222; color: white;">
+    &copy; 2025 Shani Singh. All rights reserved.
+  </footer>
+  <script>
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("modalImg");
+    const closeBtn = document.getElementById("closeModal");
+
+    document.querySelectorAll(".gallery img").forEach((img) => {
+      img.addEventListener("click", () => {
+        modal.style.display = "flex";
+        modalImg.src = img.src;
+      });
+    });
+
+    closeBtn.addEventListener("click", () => {
+      modal.style.display = "none";
+      modalImg.src = "";
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+        modalImg.src = "";
+      }
+    });
+  </script>
+
+</body>
+
+</html>
